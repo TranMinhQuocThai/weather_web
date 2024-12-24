@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export default function Header({ fetchWeatherInfo, changeMode }) {
-  const [inputValue, setInputValue] = useState('');
+  const [search, setSearch] = useState('');
   const [city, setCity] = useState('');
 
   async function getCurrentCity() {
@@ -9,24 +9,31 @@ export default function Header({ fetchWeatherInfo, changeMode }) {
       setCity('Ho Chi Minh');
       return;
     }
-    await navigator.geolocation.getCurrentPosition(async (position) => {
-      let latitude = position.coords.latitude;
-      let longitude = position.coords.longitude;
-      try {
-        let url = `http://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=5&appid=88d8c3a16490d6e5ba6e293820f3a903`;
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`Response status: ${response.status}`);
+    await navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
+        try {
+          let url = `http://1api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=5&appid=88d8c3a16490d6e5ba6e293820f3a903`;
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+          }
+          const data = await response.json();
+          setCity(data[0].name);
+          fetchWeatherInfo(data[0].name);
+        } catch (error) {
+          console.error(error.message);
+          setCity('Ho Chi Minh');
+          fetchWeatherInfo('Ho Chi Minh');
         }
-        const data = await response.json();
-        setCity(data[0].name);
-        fetchWeatherInfo(data[0].name);
-      } catch (error) {
-        console.error(error.message);
-        setCity('Ho Chi Minh');
-        fetchWeatherInfo('Ho Chi Minh');
+      },
+      (err) => {
+        if (err.PERMISSION_DENIED) {
+          alert('Hãy bật truy cập vị trí');
+        }
       }
-    });
+    );
   }
 
   useEffect(() => {
@@ -51,8 +58,8 @@ export default function Header({ fetchWeatherInfo, changeMode }) {
           className="input-group"
           onSubmit={(e) => {
             e.preventDefault();
-            setCity(inputValue);
-            fetchWeatherInfo(inputValue);
+            setCity(search);
+            fetchWeatherInfo(search);
           }}
         >
           <input
@@ -60,9 +67,9 @@ export default function Header({ fetchWeatherInfo, changeMode }) {
             name="city"
             className="form-control"
             placeholder="Tìm kiếm thành phố"
-            value={inputValue}
+            value={search}
             onChange={(e) => {
-              setInputValue(e.target.value);
+              setSearch(e.target.value);
             }}
           />
           <button className="btn btn-primary">
@@ -86,7 +93,7 @@ export default function Header({ fetchWeatherInfo, changeMode }) {
         <button
           onClick={() => {
             getCurrentCity();
-            setInputValue('');
+            setSearch('');
           }}
           className="btn btn-light rounded-pill border me-1"
         >

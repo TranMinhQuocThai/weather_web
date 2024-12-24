@@ -34,8 +34,8 @@ export default function WeatherChart({ weatherInfo, mode }) {
                 return arr;
               })(),
               borderWidth: 1,
-              borderColor: '#FF6283',
-              backgroundColor: '#FFB1C0',
+              borderColor: '#FF6384',
+              backgroundColor: '#FF638480',
               fill: 'start',
               tension: 0.5
             },
@@ -71,8 +71,8 @@ export default function WeatherChart({ weatherInfo, mode }) {
               tension: 0.4,
               pointRadius: 4,
               pointHoverRadius: 8,
-              // borderColor: '#FF6283',
-              // backgroundColor: '#FFB1C0',
+              borderColor: '#36A2EB',
+              backgroundColor: '#36A2EB80',
               fill: 'start',
             },
           ],

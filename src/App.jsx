@@ -17,7 +17,7 @@ function App() {
   async function fetchWeatherInfo(city = '') {
     let cityUrl = city.replaceAll(' ', '%20');
     try {
-      let url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${cityUrl}?unitGroup=metric&key=W53D3PBB5PC5A9AWEADBJQ8VJ&contentType=json`;
+      let url = `https://1weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${cityUrl}?unitGroup=metric&key=W53D3PBB5PC5A9AWEADBJQ8VJ&contentType=json`;
       // url = `http://localhost:3000/thoi-tiet/${cityUrl}`;
       const response = await fetch(url);
       if (!response.ok) {

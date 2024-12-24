@@ -1,13 +1,40 @@
+import { format } from 'date-fns';
 import { getDistanceString, getTemperatureString } from '../js/utils.js';
+import { useEffect, useState } from 'react';
 
 export default function CurrentWeather({ weatherInfo, mode }) {
+  const [geolocation, setGeolocation] = useState({
+    lat: 10.774,
+    lon: 106.634,
+  });
+  async function getCurrentGeolocation() {
+    if (!navigator.geolocation) {
+      return;
+    }
+    await navigator.geolocation.getCurrentPosition(async (position) => {
+      let latitude = position.coords.latitude;
+      let longitude = position.coords.longitude;
+      setGeolocation({
+        lat: latitude,
+        lon: longitude,
+      });
+    });
+  }
+  useEffect(() => {
+    getCurrentGeolocation();
+  }, []);
+
   return (
-    <section>
-      <div className="content-wrapper">
-        <div className=" bg-body-tertiary p-3 rounded-3">
+    <section className="content-wrapper">
+      <div className=" d-flex flex-column flex-lg-row gap-3">
+        <div
+          className="bg-body-tertiary mb-3 mb-md-0 p-3 rounded-3"
+          style={{ flex: 6 }}
+        >
           <b>
             <small>
-              Thời tiết hiện tại{' '}
+              Thời tiết hiện tại ngày&nbsp;
+              {format(new Date(weatherInfo.days[0].datetime), 'dd/MM')}
             </small>
           </b>
           <div className="d-sm-flex gap-3 align-items-center">
@@ -30,7 +57,7 @@ export default function CurrentWeather({ weatherInfo, mode }) {
               <b>{weatherInfo.days[0].description}</b>
               <br />
               <small>
-                Cảm thấy như{' '}
+                Nhiệt độ cảm nhận được{' '}
                 {getTemperatureString(
                   mode,
                   weatherInfo.currentConditions.feelslike
@@ -38,7 +65,7 @@ export default function CurrentWeather({ weatherInfo, mode }) {
               </small>
             </div>
           </div>
-          <div className="row row-cols-2 row-cols-md-5 g-0 g-sm-3">
+          <div className="row row-cols-2 row-cols-md-5 g-0 g-sm-2">
             <div className="col">
               <small className="text-secondary">
                 Gió&nbsp;
@@ -84,6 +111,18 @@ export default function CurrentWeather({ weatherInfo, mode }) {
               {weatherInfo.currentConditions.dew}°
             </div>
           </div>
+        </div>
+        <div style={{ flex: 4 }}>
+          <iframe
+            // src={`https://openweathermap.org/weathermap?basemap=map&cities=true&layer=temperature&lat=${geolocation.lat}&lon=${geolocation.lon}&zoom=8`}
+            src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=default&metricTemp=default&metricWind=default&zoom=11&overlay=wind&product=ecmwf&level=surface&lat=10.738&lon=106.72&detailLat=10.758425981585761&detailLon=106.72585687093708&marker=true"
+            className="rounded-3"
+            style={{
+              width: '100%',
+              minHeight: '100%',
+              height: '300px',
+            }}
+          ></iframe>
         </div>
       </div>
     </section>
