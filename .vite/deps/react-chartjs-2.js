@@ -1,7 +1,4 @@
 import {
-  require_react
-} from "./chunk-4SFRHSJ3.js";
-import {
   BarController,
   BubbleController,
   Chart,
@@ -12,6 +9,9 @@ import {
   RadarController,
   ScatterController
 } from "./chunk-SHUQRJUV.js";
+import {
+  require_react
+} from "./chunk-4SFRHSJ3.js";
 import {
   __toESM
 } from "./chunk-EQCVQC35.js";

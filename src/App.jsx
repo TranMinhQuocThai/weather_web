@@ -6,6 +6,7 @@ import Header from './components/Header';
 import CurrentWeather from './components/CurrentWeather';
 import WeatherForecast from './components/WeatherForecast';
 import WeatherChart from './components/WeatherChart';
+import OtherLocations from './components/OtherLocations.jsx';
 import { temp } from './js/temp.js';
 
 Chart.register(CategoryScale);
@@ -15,7 +16,7 @@ function App() {
   const [weatherInfo, setWeatherInfo] = useState(temp);
 
   async function fetchWeatherInfo(city = '') {
-    let cityUrl = city.replaceAll(' ', '%20');
+    let cityUrl = new URLSearchParams(city).toString();
     try {
       let url = `https://1weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${cityUrl}?unitGroup=metric&key=W53D3PBB5PC5A9AWEADBJQ8VJ&contentType=json`;
       // url = `http://localhost:3000/thoi-tiet/${cityUrl}`;
@@ -49,6 +50,7 @@ function App() {
         weatherInfo={weatherInfo}
         mode={mode}
       />
+      <OtherLocations mode={mode} />
     </section>
   );
 }
