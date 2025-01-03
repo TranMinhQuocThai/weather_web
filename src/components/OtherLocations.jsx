@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { getTemperatureString } from '../js/utils.js';
+import { Link } from 'react-router-dom';
+import citys from '../js/citys.js';
 
-function WeatherOfCity({ city, mode }) {
+function WeatherOfCity({ city }) {
   const [weatherInfo, setWeatherInfo] = useState(null);
 
   useEffect(() => {
-    let cityUrl = new URLSearchParams(city).toString();
+    let cityUrl = encodeURI(city);
     let url = `https://1weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${cityUrl}?unitGroup=metric&key=W53D3PBB5PC5A9AWEADBJQ8VJ&contentType=json`;
 
     fetch(url)
@@ -34,14 +35,21 @@ function WeatherOfCity({ city, mode }) {
   const conditions = currentConditions.conditions;
 
   return (
-    <div className="col">
+    <Link
+      to={`/${encodeURI(city)}`}
+      className="col"
+    >
       <div
-        className="card h-100 p-3"
+        className="card"
         style={{ textAlign: 'center' }}
       >
-        <h5 className="card-title">{city}</h5>
+        <h5 className="card-title">
+          {citys.find((storedCity) => {
+            return storedCity.value == city;
+          })?.label || ''}
+        </h5>
         <img
-          src={`assets/status/${weatherInfo.days[1].icon}.svg`}
+          src={`assets/status/${weatherInfo.currentConditions.icon}.svg`}
           alt=""
           className="m-auto"
         />
@@ -53,26 +61,27 @@ function WeatherOfCity({ city, mode }) {
             <i className="fa-solid fa-droplet" />
             <p className="m-0">{humidity}%</p>
           </div>
-          <div>
-            {getTemperatureString(mode, temperature)}
-          </div>
-          <div>{conditions}</div>
+          <p>{conditions}</p>
+          <p className="my-1">
+            {temperature}
+            <sup>o</sup>C
+          </p>
         </span>
       </div>
-    </div>
+    </Link>
   );
 }
-export default function OtherLocations({ mode }) {
+export default function OtherLocations() {
   // Các thành phố bạn muốn hiển thị thời tiết
   const cities = [
-    'Hà Nội',
-    'Quảng Ninh',
-    'Khánh Hòa',
-    'Đà Nẵng',
-    'Bình Dương',
-    'Đồng Nai',
-    'Vĩnh Long',
-    'Cần Thơ',
+    'ha-noi',
+    'quang-ninh',
+    'khanh-hoa',
+    'da-nang',
+    'binh-duong',
+    'dong-nai',
+    'vinh-long',
+    'can-tho',
   ];
 
   return (
@@ -84,7 +93,6 @@ export default function OtherLocations({ mode }) {
             <WeatherOfCity
               key={city}
               city={city}
-              mode={mode}
             />
           ))}
         </div>
