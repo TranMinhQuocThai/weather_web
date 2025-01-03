@@ -16,10 +16,9 @@ function App() {
   const [weatherInfo, setWeatherInfo] = useState(temp);
 
   async function fetchWeatherInfo(city = '') {
-    let cityUrl = new URLSearchParams(city).toString();
+    let cityUrl = encodeURI(city);
     try {
       let url = `https://1weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${cityUrl}?unitGroup=metric&key=W53D3PBB5PC5A9AWEADBJQ8VJ&contentType=json`;
-      // url = `http://localhost:3000/thoi-tiet/${cityUrl}`;
       const response = await fetch(url);
       if (!response.ok) {
         alert('Khong tim thay thanh pho!');

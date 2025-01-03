@@ -53,10 +53,10 @@ function WeatherOfCity({ city, mode }) {
             <i className="fa-solid fa-droplet" />
             <p className="m-0">{humidity}%</p>
           </div>
-          <div>{conditions}</div>
           <div>
             {getTemperatureString(mode, temperature)}
           </div>
+          <div>{conditions}</div>
         </span>
       </div>
     </div>

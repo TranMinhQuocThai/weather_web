@@ -26,7 +26,7 @@ export default function CurrentWeather({ weatherInfo, mode }) {
 
   return (
     <section className="content-wrapper">
-      <div className=" d-flex flex-column flex-lg-row gap-3">
+      <div className=" d-flex flex-column flex-lg-row1 gap-3">
         <div
           className="bg-body-tertiary mb-3 mb-md-0 p-3 rounded-3"
           style={{ flex: 6 }}
